@@ -1,0 +1,13 @@
+[dev]
+  command = "yarn serve" # Command to start your dev server
+  port = 8080 # Port that the dev server will be listening on
+  publish = "dist" # If you use a _redirect file, provide the path to your static content folder
+  functions = "lambda"
+  functionsPort = 34567 # port for functions server
+  autoLaunch = true
+
+
+[build]
+  command = "yarn build"
+  functions = "lambda"
+  publish = "dist"
