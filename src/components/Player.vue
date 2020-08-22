@@ -6,6 +6,7 @@
       hide-overlay
       :value="show"
       :retain-focus="false"
+      no-click-animation
       persistent
     >
       <v-card tile>

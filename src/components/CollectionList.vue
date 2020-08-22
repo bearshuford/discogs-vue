@@ -1,11 +1,9 @@
 <template>
     <v-list two-line subheader :nav="isNav">
-        <v-subheader inset>collection</v-subheader>
-
         <v-list-item
           v-for="release in collection"
           :key="release.id"
-          :href="`${'/' + release.id}`"
+          :to="`${'/' + release.id}`"
         >
           <v-list-item-avatar tile>
             <v-img :src="release.thumb"></v-img>

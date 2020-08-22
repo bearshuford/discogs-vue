@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <h1 :v-text="release.title"></h1>
+    <h1>{{release.title}}</h1>
+    <h3>{{release.formattedArtists}}</h3>
     <videolist :release="release" v-on:play-pause="playPause"></videolist>
   </v-container>
 </template>

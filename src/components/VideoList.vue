@@ -1,6 +1,5 @@
 <template>
-  <v-list :v-if="release.videos" two-line subheader>
-    <v-subheader inset>videos</v-subheader>
+  <v-list :v-if="release.videos" two-line>
     <v-list-item
       v-for="video in release.videos"
       :key="video.title"
