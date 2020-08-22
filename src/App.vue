@@ -61,11 +61,9 @@ export default {
     },
     playVideo() {
       this.player.playVideo();
-      this.isPlaying = true;
     },
     pauseVideo() {
       this.player.pauseVideo();
-      this.isPlaying = false;
     },
     toggleVideo() {
       if (this.isPlaying) this.pauseVideo();
@@ -81,6 +79,7 @@ export default {
       }
     },
     async playing() {
+      this.isPlaying = true;
       let totalTime = await this.player.getDuration();
 
       this.processId = setInterval(() => {
@@ -104,6 +103,7 @@ export default {
       this.time = minutes + ":" + seconds;
     },
     paused() {
+      this.isPlaying = false;
       clearInterval(this.processId);
     },
   },
