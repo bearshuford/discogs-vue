@@ -15,6 +15,19 @@ const parseFormat = ({ descriptions, name, text, qty }) => ({
   qty,
 });
 
+const parseVideo = ({ description, duration, title, uri }) => {
+  const id = uri.split("watch?v=")[1];
+  const thumb = endpoints.ytThumbnail(id);
+  return {
+    id,
+    uri,
+    thumb,
+    title,
+    description,
+    duration,
+  };
+};
+
 const getRelease = async (releaseId) => {
   try {
     let request = await fetch(endpoints.release(releaseId), options);
@@ -24,11 +37,11 @@ const getRelease = async (releaseId) => {
     const info = {
       title: release.title,
       artists: release.artists.map(parseArtist),
-      artistsSort: release.artists_sort,
+      formattedArtists: release.artists.map(({ name }) => name).join(", "),
       genres: release.genres,
       formats: release.formats && release.formats.map(parseFormat),
       images: release.images,
-      videos: release.videos,
+      videos: release.videos.map(parseVideo),
       cover: release.thumb,
       masterId: release.master_id,
       marketUrl: endpoints.marketplace(releaseId),

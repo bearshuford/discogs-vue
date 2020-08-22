@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-chip-group active-class="primary--text" v-model="filters">
       <v-chip v-for="genre in genres.sorted" :key="genre">
         {{ genre }}
@@ -9,7 +9,7 @@
       :collection="filteredCollection"
       :nav="isNav"
     ></collectionlist>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -66,9 +66,6 @@ export default {
     async getData() {
       const collection = await fetcher(this.endpoint);
       this.collection = collection;
-    },
-    formatArtists(artists) {
-      return artists.map(({ name }) => name).join(", ");
     },
     parseGenres(allGenres) {
       const freq = allGenres.reduce((r, e) => {

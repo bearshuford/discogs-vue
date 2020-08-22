@@ -27,6 +27,7 @@ const parseRelease = ({ basic_information: info, date_added: dateAdded }) => ({
   marketUrl: endpoints.marketplace(info.id),
   formats: info.formats.map(parseFormat),
   artists: info.artists.map(parseArtist),
+  formattedArtists: info.artists.map(({ name }) => name).join(", "),
 });
 
 exports.handler = async (event) => {

@@ -1,8 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Collection from '../views/Collection';
-import Videos from '../views/Videos';
+import { Collection, Release } from "../views";
 
 Vue.use(VueRouter);
 
@@ -10,19 +9,19 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Collection
+    component: Collection,
   },
-  { 
-    path: '/:releaseId',
-    component: Videos,
-    props: true
-  }
+  {
+    path: "/:releaseId",
+    component: Release,
+    props: true,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;

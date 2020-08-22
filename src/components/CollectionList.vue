@@ -13,12 +13,12 @@
 
           <v-list-item-content>
             <v-list-item-title v-text="release.title"></v-list-item-title>
-            <v-list-item-subtitle v-text="formatArtists(release.artists)"></v-list-item-subtitle>
+            <v-list-item-subtitle v-text="release.formattedArtists"></v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>
             <v-btn icon>
-              <v-list-item-action-text v-text="release.year"></v-list-item-action-text>
+              <v-list-item-action-text v-if="release.year" v-text="release.year"></v-list-item-action-text>
               <v-icon color="grey">mdi-info</v-icon>
             </v-btn>
           </v-list-item-action>
@@ -34,10 +34,5 @@
             return this.nav;
         }
     },
-    methods: {
-      formatArtists(artists) {
-        return artists.map(({name}) => name).join(", ");
-      }
-    }
   };
 </script>
