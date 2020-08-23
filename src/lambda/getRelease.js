@@ -35,6 +35,7 @@ const getRelease = async (releaseId) => {
 
     const { have, want } = release.community || {};
     const info = {
+      releaseId: release.id,
       title: release.title,
       artists: release.artists.map(parseArtist),
       formattedArtists: release.artists.map(({ name }) => name).join(", "),
@@ -70,7 +71,6 @@ exports.handler = async (event) => {
     let release = await getRelease(releaseId);
     return { statusCode: 200, body: JSON.stringify(release) };
   } catch (error) {
-    console.log("getRelease error", error);
     return { statusCode: 404, body: "error getting release" };
   }
 };

@@ -3,7 +3,7 @@
     <v-list-item
       v-for="video in release.videos"
       :key="video.title"
-      v-on:click="playPause({ video, release })"
+      v-on:click="playNew({ video, release })"
     >
       <v-list-item-avatar tile>
         <v-img :src="video.thumb"></v-img>
@@ -24,19 +24,12 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   props: ["release"],
   methods: {
-    playPause({ video, release }) {
-      this.$emit("play-pause", {
-        video,
-        release: {
-          releaseId: release.releaseId,
-          artists: release.formattedArtists,
-          title: release.title,
-        },
-      });
-    },
+    ...mapActions(["playNew"]),
   },
 };
 </script>

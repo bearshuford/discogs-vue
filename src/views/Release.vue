@@ -2,7 +2,7 @@
   <v-container>
     <h2>{{release.title}}</h2>
     <h3>{{release.formattedArtists}}</h3>
-    <videolist :release="release" v-on:play-pause="playPause"></videolist>
+    <videolist :release="release"></videolist>
   </v-container>
 </template>
 
@@ -35,9 +35,6 @@ export default {
     async getData() {
       const release = await fetcher(this.endpoint);
       this.release = release;
-    },
-    playPause(video) {
-      this.$emit("play-pause", video);
     },
   },
 };

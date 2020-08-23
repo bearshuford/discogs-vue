@@ -13,7 +13,7 @@
         <v-progress-linear
           :value="this.currentProgress"
           class="my-0"
-          height="3"
+          height="4"
         ></v-progress-linear>
 
         <v-list>
@@ -28,7 +28,7 @@
             <v-spacer></v-spacer>
 
             <v-list-item-icon :class="{ 'mx-5': $vuetify.breakpoint.mdAndUp }">
-              <v-btn icon v-on:click="$emit('play-pause')">
+              <v-btn icon v-on:click="playPause">
                 <v-icon>{{ isPlaying ? "mdi-pause" : "mdi-play" }}</v-icon>
               </v-btn>
             </v-list-item-icon>
@@ -43,20 +43,86 @@
             </v-list-item-icon>
           </v-list-item>
         </v-list>
+        <youtube
+          v-show="false"
+          ref="youtube"
+          :video-id="currentVideo.id"
+          :player-vars="{ autoplay: 1, playsinline: 1 }"
+          @playing="onPlay"
+          @paused="paused"
+          @ready="ready"
+        ></youtube>
       </v-card>
     </v-bottom-sheet>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
-  props: { video: Object, release: Object, playing: Boolean, isOpen: Boolean, progress: Number },
+  data() {
+    return {
+      loaded: false,
+      time: "00:00",
+      progress: 0,
+      processId: null,
+      showVideo: false,
+    };
+  },
+  methods: {
+    ...mapActions(["play", "pause"]),
+    ready() {
+      this.loaded = true;
+    },
+    playVideo() {
+      this.player.playVideo();
+    },
+    pauseVideo() {
+      this.player.pauseVideo();
+    },
+    toggleShowVideo() {
+      this.showVideo = !this.showVideo;
+    },
+    playPause() {
+      if (this.isPlaying) this.pauseVideo();
+      else this.playVideo();
+    },
+    updateTime(time) {
+      time = Math.round(time);
+      let minutes = Math.floor(time / 60);
+      let seconds = time - minutes * 60;
+
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+
+      this.time = minutes + ":" + seconds;
+    },
+    async onPlay() {
+      this.play();
+      let totalTime = await this.player.getDuration();
+      this.processId = setInterval(() => {
+        this.player.getCurrentTime().then((time) => {
+          let progress = (time / totalTime) * 100;
+          this.progress = progress < 100 ? +progress.toFixed(3) : 100;
+          this.updateTime(time + 1);
+        });
+      }, 100);
+    },
+    paused() {
+      this.pause();
+      clearInterval(this.processId);
+    },
+  },
   computed: {
+    ...mapState(["video", "release", "isPlaying"]),
+    isOpen() {
+      return this.video && this.video.title?.length > 0;
+    },
+    player() {
+      return this.$refs.youtube.player;
+    },
     show: function() {
       return this.isOpen;
-    },
-    isPlaying: function() {
-      return this.playing;
     },
     currentVideo: function() {
       return this.video;
@@ -76,6 +142,11 @@ export default {
         this.$refs.player.showScroll();
       });
     },
+    // isPlaying: function(play) {
+    //   if (play) this.player.playVideo();
+    //   else this.player.pauseVideo();
+    // },
+    loaded: "playVideo",
   },
 };
 </script>
